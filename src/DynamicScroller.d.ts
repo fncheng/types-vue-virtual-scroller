@@ -1,10 +1,11 @@
-import { DefineComponent, ComponentOptionsMixin, VNodeProps, AllowedComponentProps, ComponentCustomProps, VNode, SlotsType } from 'vue';
-import { RecycleScrollerProps } from './RecycleScroller';
+import { DefineComponent, VNode, SlotsType } from 'vue';
+import { RecycleScrollerProps, RecycleScrollerEmits } from './RecycleScroller';
 
 /**
  * DynamicScroller组件props接口
  */
-export interface DynamicScrollerProps extends Omit<RecycleScrollerProps, 'minItemSize'> {
+export interface DynamicScrollerProps
+  extends Omit<RecycleScrollerProps, 'minItemSize'> {
   /**
    * 项目的最小大小（像素）
    * 用于初始渲染并在实际大小计算完成前撑开空间
@@ -72,27 +73,12 @@ export interface DynamicScrollerSlots {
 /**
  * DynamicScroller组件的类型定义
  */
-export type DynamicScrollerType = DefineComponent<
-  DynamicScrollerProps,
-  {},
-  {},
-  {},
-  {},
-  ComponentOptionsMixin,
-  ComponentOptionsMixin,
-  {
-    resize: () => void;
-    visible: () => void;
-  },
-  string,
-  VNodeProps & AllowedComponentProps & ComponentCustomProps,
-  Readonly<DynamicScrollerProps> & {
-    onResize?: (() => any) | undefined;
-    onVisible?: (() => any) | undefined;
-  },
-  DynamicScrollerExpose,
-  SlotsType<DynamicScrollerSlots>
->;
+export type DynamicScrollerType = DefineComponent<{
+  props: DynamicScrollerProps;
+  emits: RecycleScrollerEmits;
+  expose: DynamicScrollerExpose;
+  slots: SlotsType<DynamicScrollerSlots>;
+}>;
 
 /**
  * 动态高度虚拟滚动组件
@@ -100,4 +86,4 @@ export type DynamicScrollerType = DefineComponent<
  */
 declare const DynamicScroller: DynamicScrollerType;
 
-export default DynamicScroller; 
+export default DynamicScroller;

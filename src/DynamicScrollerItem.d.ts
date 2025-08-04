@@ -1,4 +1,4 @@
-import { DefineComponent, ComponentOptionsMixin, VNodeProps, AllowedComponentProps, ComponentCustomProps } from 'vue';
+import { DefineComponent } from 'vue';
 
 /**
  * DynamicScrollerItem组件props接口
@@ -49,39 +49,12 @@ export interface DynamicScrollerItemProps {
 /**
  * DynamicScrollerItem组件的类型定义
  */
-export type DynamicScrollerItemType = DefineComponent<
-  DynamicScrollerItemProps,
-  {},
-  {},
-  {
-    /**
-     * 项目的ID
-     */
-    id: () => string | number;
-    
-    /**
-     * 项目的当前大小
-     */
-    size: () => number;
-    
-    /**
-     * 是否处于活动状态并且父滚动组件也处于活动状态
-     */
-    finalActive: () => boolean;
-  },
-  {},
-  ComponentOptionsMixin,
-  ComponentOptionsMixin,
-  {
+export type DynamicScrollerItemType = DefineComponent<{
+  props: DynamicScrollerItemProps;
+  emits: {
     resize: (id: string | number) => void;
-  },
-  string,
-  VNodeProps & AllowedComponentProps & ComponentCustomProps,
-  Readonly<DynamicScrollerItemProps> & {
-    onResize?: ((id: string | number) => any) | undefined;
-  },
-  {}
->;
+  };
+}>;
 
 /**
  * 动态滚动项组件
@@ -89,4 +62,4 @@ export type DynamicScrollerItemType = DefineComponent<
  */
 declare const DynamicScrollerItem: DynamicScrollerItemType;
 
-export default DynamicScrollerItem; 
+export default DynamicScrollerItem;

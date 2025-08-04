@@ -1,4 +1,4 @@
-import { DefineComponent, ComponentOptionsMixin, EmitsOptions, VNodeProps, AllowedComponentProps, ComponentCustomProps } from 'vue';
+import { DefineComponent, VNode, SlotsType } from 'vue';
 
 /**
  * RecycleScroller组件props接口
@@ -148,7 +148,12 @@ export interface RecycleScrollerEmits {
    * @param visibleStartIndex 可见起始索引
    * @param visibleEndIndex 可见结束索引
    */
-  update: (startIndex: number, endIndex: number, visibleStartIndex: number, visibleEndIndex: number) => void;
+  update: (
+    startIndex: number,
+    endIndex: number,
+    visibleStartIndex: number,
+    visibleEndIndex: number
+  ) => void;
 
   /**
    * 当滚动开始时触发
@@ -176,41 +181,24 @@ export interface RecycleScrollerExpose {
    * @param position 滚动位置（像素）
    */
   scrollToPosition: (position: number) => void;
+}
 
-  updateVisibleItems: (itemsChanged: boolean) => void;
+export interface RecycleScrollerSlots {
+  default(props: { item: any; index: number; active: boolean }): VNode[];
+  before?(): VNode[];
+  after?(): VNode[];
+  empty?(): VNode[];
 }
 
 /**
  * RecycleScroller组件的类型定义
  */
-export type RecycleScrollerType = DefineComponent<
-  RecycleScrollerProps,
-  {},
-  {},
-  {},
-  {},
-  ComponentOptionsMixin,
-  ComponentOptionsMixin,
-  {
-    resize: () => void;
-    visible: () => void;
-    hidden: () => void;
-    update: (startIndex: number, endIndex: number, visibleStartIndex: number, visibleEndIndex: number) => void;
-    'scroll-start': () => void;
-    'scroll-end': () => void;
-  },
-  string,
-  VNodeProps & AllowedComponentProps & ComponentCustomProps,
-  Readonly<RecycleScrollerProps> & {
-    onResize?: (() => any) | undefined;
-    onVisible?: (() => any) | undefined;
-    onHidden?: (() => any) | undefined;
-    onUpdate?: ((startIndex: number, endIndex: number, visibleStartIndex: number, visibleEndIndex: number) => any) | undefined;
-    'onScroll-start'?: (() => any) | undefined;
-    'onScroll-end'?: (() => any) | undefined;
-  },
-  RecycleScrollerExpose
->;
+export type RecycleScrollerType = DefineComponent<{
+  props: RecycleScrollerProps;
+  emits: RecycleScrollerEmits;
+  expose: RecycleScrollerExpose;
+  slots: SlotsType<RecycleScrollerSlots>;
+}>;
 
 /**
  * Vue虚拟滚动组件
@@ -218,4 +206,4 @@ export type RecycleScrollerType = DefineComponent<
  */
 declare const RecycleScroller: RecycleScrollerType;
 
-export default RecycleScroller; 
+export default RecycleScroller;
