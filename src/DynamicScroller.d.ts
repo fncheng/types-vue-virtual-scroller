@@ -1,4 +1,4 @@
-import { DefineComponent, ComponentOptionsMixin, VNodeProps, AllowedComponentProps, ComponentCustomProps } from 'vue';
+import { DefineComponent, ComponentOptionsMixin, VNodeProps, AllowedComponentProps, ComponentCustomProps, VNode, SlotsType } from 'vue';
 import { RecycleScrollerProps } from './RecycleScroller';
 
 /**
@@ -55,6 +55,21 @@ export interface DynamicScrollerExpose {
 }
 
 /**
+ * DynamicScroller组件的插槽类型
+ */
+export interface DynamicScrollerSlots {
+  default(props: {
+    item: any; // 原始项目数据
+    index: number; // 项目索引
+    active: boolean; // 是否处于活动状态
+    itemWithSize: ItemWithSize<any>; // 带有大小信息的项目
+  }): VNode[];
+  before?(): VNode[];
+  after?(): VNode[];
+  empty?(): VNode[];
+}
+
+/**
  * DynamicScroller组件的类型定义
  */
 export type DynamicScrollerType = DefineComponent<
@@ -75,7 +90,8 @@ export type DynamicScrollerType = DefineComponent<
     onResize?: (() => any) | undefined;
     onVisible?: (() => any) | undefined;
   },
-  DynamicScrollerExpose
+  DynamicScrollerExpose,
+  SlotsType<DynamicScrollerSlots>
 >;
 
 /**
